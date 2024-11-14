@@ -8,14 +8,16 @@
 
 export interface Config {
   auth: {
-    users: UserAuthOperations;
+    adminUsers: AdminUserAuthOperations;
+    companyUsers: CompanyUserAuthOperations;
   };
   collections: {
     pages: Page;
     posts: Post;
     media: Media;
     categories: Category;
-    users: User;
+    adminUsers: AdminUser;
+    companyUsers: CompanyUser;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -30,7 +32,8 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
-    users: UsersSelect<false> | UsersSelect<true>;
+    adminUsers: AdminUsersSelect<false> | AdminUsersSelect<true>;
+    companyUsers: CompanyUsersSelect<false> | CompanyUsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -51,15 +54,37 @@ export interface Config {
     footer: FooterSelect<false> | FooterSelect<true>;
   };
   locale: null;
-  user: User & {
-    collection: 'users';
-  };
+  user:
+    | (AdminUser & {
+        collection: 'adminUsers';
+      })
+    | (CompanyUser & {
+        collection: 'companyUsers';
+      });
   jobs?: {
     tasks: unknown;
     workflows?: unknown;
   };
 }
-export interface UserAuthOperations {
+export interface AdminUserAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface CompanyUserAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -392,7 +417,7 @@ export interface Post {
     description?: string | null;
   };
   publishedAt?: string | null;
-  authors?: (number | User)[] | null;
+  authors?: (number | AdminUser)[] | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -407,11 +432,12 @@ export interface Post {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "adminUsers".
  */
-export interface User {
+export interface AdminUser {
   id: number;
   name?: string | null;
+  roles: ('superadmin' | 'admin')[];
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -615,6 +641,22 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "companyUsers".
+ */
+export interface CompanyUser {
+  id: number;
+  fullname?: string | null;
+  email?: string | null;
+  turkishIdentity?: number | null;
+  personalNumber?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -705,8 +747,12 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'adminUsers';
+        value: number | AdminUser;
+      } | null)
+    | ({
+        relationTo: 'companyUsers';
+        value: number | CompanyUser;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -725,10 +771,15 @@ export interface PayloadLockedDocument {
         value: number | Search;
       } | null);
   globalSlug?: string | null;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'adminUsers';
+        value: number | AdminUser;
+      }
+    | {
+        relationTo: 'companyUsers';
+        value: number | CompanyUser;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -738,10 +789,15 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: number;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'adminUsers';
+        value: number | AdminUser;
+      }
+    | {
+        relationTo: 'companyUsers';
+        value: number | CompanyUser;
+      };
   key?: string | null;
   value?:
     | {
@@ -1024,10 +1080,11 @@ export interface CategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "adminUsers_select".
  */
-export interface UsersSelect<T extends boolean = true> {
+export interface AdminUsersSelect<T extends boolean = true> {
   name?: T;
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1037,6 +1094,21 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "companyUsers_select".
+ */
+export interface CompanyUsersSelect<T extends boolean = true> {
+  fullname?: T;
+  email?: T;
+  turkishIdentity?: T;
+  personalNumber?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

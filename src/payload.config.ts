@@ -22,12 +22,8 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
-import Categories from './collections/Categories'
-import { Media } from './collections/Media'
-import { Pages } from './collections/Pages'
-import { Posts } from './collections/Posts'
-import Users from './collections/Users'
 import { seedHandler } from './endpoints/seedHandler'
+
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { revalidateRedirects } from './hooks/revalidateRedirects'
@@ -36,6 +32,13 @@ import { Page, Post } from 'src/payload-types'
 
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
+
+import Categories from './collections/Categories'
+import { Media } from './collections/Media'
+import { Pages } from './collections/Pages'
+import { Posts } from './collections/Posts'
+import AdminUsers from './collections/AdminUsers'
+import CompanyUsers from './collections/CompanyUsers'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -63,7 +66,7 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    user: Users.slug,
+    user: AdminUsers.slug,
     livePreview: {
       breakpoints: [
         {
@@ -125,7 +128,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, AdminUsers, CompanyUsers],
   cors: [process.env.NEXT_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [
     // The seed endpoint is used to populate the database with some example data
