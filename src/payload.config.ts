@@ -1,6 +1,9 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 
+import { tr } from 'payload/i18n/tr'
+import { en } from 'payload/i18n/en'
+
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
@@ -54,6 +57,27 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 }
 
 export default buildConfig({
+  localization: {
+    locales: [
+      {
+        code: 'tr',
+        label: 'Turkish',
+      },
+      {
+        code: 'en',
+        label: 'English',
+      },
+    ],
+    defaultLocale: 'en',
+    fallback: true,
+  },
+  i18n: {
+    fallbackLanguage: 'en',
+    supportedLanguages: {
+      tr,
+      en,
+    },
+  },
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
