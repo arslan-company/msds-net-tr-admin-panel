@@ -1,14 +1,13 @@
+import { AdminUser } from '@/payload-types'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-
-import type { User } from '../payload-types'
 
 export const getMeUser = async (args?: {
   nullUserRedirect?: string
   validUserRedirect?: string
 }): Promise<{
   token: string
-  user: User
+  user: AdminUser
 }> => {
   const { nullUserRedirect, validUserRedirect } = args || {}
   const cookieStore = await cookies()
@@ -23,7 +22,7 @@ export const getMeUser = async (args?: {
   const {
     user,
   }: {
-    user: User
+    user: AdminUser
   } = await meUserReq.json()
 
   if (validUserRedirect && meUserReq.ok && user) {

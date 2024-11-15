@@ -5,8 +5,14 @@ import { authenticated } from '../../access/authenticated'
 const CompanyUsers: CollectionConfig = {
   slug: 'companyUsers',
   labels: {
-    plural: 'Company Users',
-    singular: 'Company User',
+    plural: {
+      tr: 'Şirket Kullanıcıları',
+      en: 'Company Users',
+    },
+    singular: {
+      tr: 'Şirket Kullanıcısı',
+      en: 'Company User',
+    },
   },
   access: {
     create: authenticated,
@@ -15,7 +21,7 @@ const CompanyUsers: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['name', 'email'],
+    defaultColumns: ['fullname', 'email', 'personalPhoneNumber'],
     useAsTitle: 'fullname',
   },
   auth: {
@@ -25,6 +31,10 @@ const CompanyUsers: CollectionConfig = {
   fields: [
     {
       name: 'fullname',
+      label: {
+        tr: 'İsim-Soyisim',
+        en: 'Fullname',
+      },
       type: 'text',
     },
     {
@@ -33,10 +43,18 @@ const CompanyUsers: CollectionConfig = {
     },
     {
       name: 'turkishIdentity',
+      label: {
+        tr: 'TC. Kimlik Numarası',
+        en: 'Turkish Identity',
+      },
       type: 'number',
     },
     {
-      name: 'personalNumber',
+      name: 'personalPhoneNumber',
+      label: {
+        tr: 'Kişisel Telefon Numarası',
+        en: 'Personal Phone Number',
+      },
       type: 'text',
     },
   ],

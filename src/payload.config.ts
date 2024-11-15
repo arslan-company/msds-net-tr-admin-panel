@@ -42,6 +42,8 @@ import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import AdminUsers from './collections/AdminUsers'
 import CompanyUsers from './collections/CompanyUsers'
+import MSDS from './collections/MSDS'
+import Companies from './collections/Companies'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -152,7 +154,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, AdminUsers, CompanyUsers],
+  collections: [Pages, Posts, Media, Categories, AdminUsers, CompanyUsers, Companies, MSDS],
   cors: [process.env.NEXT_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [
     // The seed endpoint is used to populate the database with some example data

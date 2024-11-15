@@ -6,8 +6,14 @@ import cantEraseYourself from './hooks/cantEraseYourself'
 const AdminUsers: CollectionConfig = {
   slug: 'adminUsers',
   labels: {
-    singular: 'Admin User',
-    plural: 'Admin Users',
+    singular: {
+      tr: 'Admin Kullanıcısı',
+      en: 'Admin User',
+    },
+    plural: {
+      tr: 'Admin Kullanıcıları',
+      en: 'Admin Users',
+    },
   },
   access: {
     admin: authenticated,
@@ -19,6 +25,10 @@ const AdminUsers: CollectionConfig = {
   admin: {
     defaultColumns: ['name', 'email'],
     useAsTitle: 'name',
+    description: {
+      tr: "Admin Kullanıcıları, admin panel'ini yönetebilen hesaplardır.",
+      en: 'Admin Users manage admin panel.',
+    },
   },
   auth: true,
   fields: [
