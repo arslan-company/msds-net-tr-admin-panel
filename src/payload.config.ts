@@ -24,7 +24,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
-import { seedHandler } from './endpoints/seedHandler'
+// import { seedHandler } from './endpoints/seedHandler'
 
 // import { revalidateRedirects } from './hooks/revalidateRedirects'
 // import { Footer } from './Footer/config'
@@ -44,6 +44,81 @@ import Companies from './collections/Companies'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+const plugins: any = [
+  // redirectsPlugin({
+  //   collections: ['pages', 'posts'],
+  //   overrides: {
+  //     // @ts-expect-error
+  //     fields: ({ defaultFields }) => {
+  //       return defaultFields.map((field) => {
+  //         if ('name' in field && field.name === 'from') {
+  //           return {
+  //             ...field,
+  //             admin: {
+  //               description: 'You will need to rebuild the website when changing this field.',
+  //             },
+  //           }
+  //         }
+  //         return field
+  //       })
+  //     },
+  //     hooks: {
+  //       afterChange: [revalidateRedirects],
+  //     },
+  //   },
+  // }),
+  // nestedDocsPlugin({
+  //   collections: ['categories'],
+  // }),
+  // formBuilderPlugin({
+  //   fields: {
+  //     payment: false,
+  //   },
+  //   formOverrides: {
+  //     fields: ({ defaultFields }) => {
+  //       return defaultFields.map((field) => {
+  //         if ('name' in field && field.name === 'confirmationMessage') {
+  //           return {
+  //             ...field,
+  //             editor: lexicalEditor({
+  //               features: ({ rootFeatures }) => {
+  //                 return [
+  //                   ...rootFeatures,
+  //                   FixedToolbarFeature(),
+  //                   HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+  //                 ]
+  //               },
+  //             }),
+  //           }
+  //         }
+  //         return field
+  //       })
+  //     },
+  //   },
+  // }),
+  // searchPlugin({
+  //   collections: ['posts'],
+  //   beforeSync: beforeSyncWithSearch,
+  //   searchOverrides: {
+  //     fields: ({ defaultFields }) => {
+  //       return [...defaultFields, ...searchFields]
+  //     },
+  //   },
+  // }),
+]
+
+if (process.env.BLOB_READ_WRITE_TOKEN) {
+  const vercelBlob = vercelBlobStorage({
+    collections: {
+      [Media.slug]: true,
+      [MSDS.slug]: true,
+    },
+    token: process.env.BLOB_READ_WRITE_TOKEN || '',
+  })
+
+  plugins.push(vercelBlob)
+}
 
 export default buildConfig({
   localization: {
@@ -144,85 +219,17 @@ export default buildConfig({
   // collections: [Pages, Posts, Media, Categories, AdminUsers, CompanyUsers, Companies, MSDS],
   collections: [Media, AdminUsers, CompanyUsers, Companies, MSDS],
   cors: [process.env.NEXT_PUBLIC_SERVER_URL || ''].filter(Boolean),
-  endpoints: [
-    // The seed endpoint is used to populate the database with some example data
-    // You should delete this endpoint before deploying your site to production
-    {
-      handler: seedHandler,
-      method: 'get',
-      path: '/seed',
-    },
-  ],
+  // endpoints: [
+  //   // The seed endpoint is used to populate the database with some example data
+  //   // You should delete this endpoint before deploying your site to production
+  //   {
+  //     handler: seedHandler,
+  //     method: 'get',
+  //     path: '/seed',
+  //   },
+  // ],
   // globals: [Header, Footer],
-  plugins: [
-    vercelBlobStorage({
-      collections: {
-        [Media.slug]: true,
-        [MSDS.slug]: true,
-      },
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
-    }),
-    // redirectsPlugin({
-    //   collections: ['pages', 'posts'],
-    //   overrides: {
-    //     // @ts-expect-error
-    //     fields: ({ defaultFields }) => {
-    //       return defaultFields.map((field) => {
-    //         if ('name' in field && field.name === 'from') {
-    //           return {
-    //             ...field,
-    //             admin: {
-    //               description: 'You will need to rebuild the website when changing this field.',
-    //             },
-    //           }
-    //         }
-    //         return field
-    //       })
-    //     },
-    //     hooks: {
-    //       afterChange: [revalidateRedirects],
-    //     },
-    //   },
-    // }),
-    // nestedDocsPlugin({
-    //   collections: ['categories'],
-    // }),
-    // formBuilderPlugin({
-    //   fields: {
-    //     payment: false,
-    //   },
-    //   formOverrides: {
-    //     fields: ({ defaultFields }) => {
-    //       return defaultFields.map((field) => {
-    //         if ('name' in field && field.name === 'confirmationMessage') {
-    //           return {
-    //             ...field,
-    //             editor: lexicalEditor({
-    //               features: ({ rootFeatures }) => {
-    //                 return [
-    //                   ...rootFeatures,
-    //                   FixedToolbarFeature(),
-    //                   HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-    //                 ]
-    //               },
-    //             }),
-    //           }
-    //         }
-    //         return field
-    //       })
-    //     },
-    //   },
-    // }),
-    // searchPlugin({
-    //   collections: ['posts'],
-    //   beforeSync: beforeSyncWithSearch,
-    //   searchOverrides: {
-    //     fields: ({ defaultFields }) => {
-    //       return [...defaultFields, ...searchFields]
-    //     },
-    //   },
-    // }),
-  ],
+  plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {

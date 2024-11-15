@@ -1,11 +1,6 @@
-import { BannerBlock } from '@/blocks/Banner/Component'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import React, { Fragment, JSX } from 'react'
 import { CMSLink } from '@/components/Link'
 import { DefaultNodeTypes, SerializedBlockNode } from '@payloadcms/richtext-lexical'
-import type { BannerBlock as BannerBlockProps } from '@/payload-types'
 
 import {
   IS_BOLD,
@@ -16,14 +11,11 @@ import {
   IS_SUPERSCRIPT,
   IS_UNDERLINE,
 } from './nodeFormat'
-import type {
-  CallToActionBlock as CTABlockProps,
-  MediaBlock as MediaBlockProps,
-} from '@/payload-types'
 
 export type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps>
+  // | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps>
+  | SerializedBlockNode
 
 type Props = {
   nodes: NodeTypes[]
@@ -104,24 +96,24 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
           }
 
           switch (blockType) {
-            case 'cta':
-              return <CallToActionBlock key={index} {...block} />
-            case 'mediaBlock':
-              return (
-                <MediaBlock
-                  className="col-start-1 col-span-3"
-                  imgClassName="m-0"
-                  key={index}
-                  {...block}
-                  captionClassName="mx-auto max-w-[48rem]"
-                  enableGutter={false}
-                  disableInnerContainer={true}
-                />
-              )
-            case 'banner':
-              return <BannerBlock className="col-start-2 mb-4" key={index} {...block} />
-            case 'code':
-              return <CodeBlock className="col-start-2" key={index} {...block} />
+            // case 'cta':
+            //   return <CallToActionBlock key={index} {...block} />
+            // case 'mediaBlock':
+            //   return (
+            //     <MediaBlock
+            //       className="col-start-1 col-span-3"
+            //       imgClassName="m-0"
+            //       key={index}
+            //       {...block}
+            //       captionClassName="mx-auto max-w-[48rem]"
+            //       enableGutter={false}
+            //       disableInnerContainer={true}
+            //     />
+            //   )
+            // case 'banner':
+            //   return <BannerBlock className="col-start-2 mb-4" key={index} {...block} />
+            // case 'code':
+            //   return <CodeBlock className="col-start-2" key={index} {...block} />
             default:
               return null
           }
