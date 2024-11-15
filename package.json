@@ -1,6 +1,6 @@
 {
   "name": "msds-net-tr-admin-panel",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.2",
   "description": "Website template for Payload",
   "license": "MIT",
   "type": "module",
@@ -19,6 +19,8 @@
   },
   "dependencies": {
     "@payloadcms/db-postgres": "beta",
+    "@payloadcms/db-vercel-postgres": "beta",
+    "@payloadcms/storage-vercel-blob": "beta",
     "@payloadcms/live-preview-react": "beta",
     "@payloadcms/next": "beta",
     "@payloadcms/payload-cloud": "beta",

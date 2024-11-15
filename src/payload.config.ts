@@ -1,5 +1,6 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
 import { tr } from 'payload/i18n/tr'
 import { en } from 'payload/i18n/en'
@@ -154,6 +155,13 @@ export default buildConfig({
   ],
   // globals: [Header, Footer],
   plugins: [
+    vercelBlobStorage({
+      collections: {
+        [Media.slug]: true,
+        [MSDS.slug]: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
     // redirectsPlugin({
     //   collections: ['pages', 'posts'],
     //   overrides: {
